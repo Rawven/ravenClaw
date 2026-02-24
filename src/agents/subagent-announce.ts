@@ -41,7 +41,7 @@ import { sanitizeTextContent, extractAssistantText } from "./tools/sessions-help
 const FAST_TEST_MODE = process.env.OPENCLAW_TEST_FAST === "1";
 const FAST_TEST_RETRY_INTERVAL_MS = 8;
 const FAST_TEST_REPLY_CHANGE_WAIT_MS = 20;
-const DEFAULT_SUBAGENT_ANNOUNCE_TIMEOUT_MS = 60_000;
+const DEFAULT_SUBAGENT_ANNOUNCE_TIMEOUT_MS = 120_000; // 2 minutes
 const MAX_TIMER_SAFE_TIMEOUT_MS = 2_147_000_000;
 
 type ToolResultMessage = {

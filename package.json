@@ -1,20 +1,20 @@
 {
-  "name": "openclaw",
+  "name": "ravenclaw",
   "version": "2026.2.23",
   "description": "Multi-channel AI gateway with extensible messaging integrations",
   "keywords": [],
-  "homepage": "https://github.com/openclaw/openclaw#readme",
+  "homepage": "https://github.com/RavenClaw/RavenClaw#readme",
   "bugs": {
-    "url": "https://github.com/openclaw/openclaw/issues"
+    "url": "https://github.com/RavenClaw/RavenClaw/issues"
   },
   "license": "MIT",
   "author": "",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/openclaw/openclaw.git"
+    "url": "git+https://github.com/RavenClaw/RavenClaw.git"
   },
   "bin": {
-    "openclaw": "openclaw.mjs"
+    "ravenclaw": "ravenclaw.mjs"
   },
   "directories": {
     "doc": "docs",
@@ -23,7 +23,7 @@
   "files": [
     "CHANGELOG.md",
     "LICENSE",
-    "openclaw.mjs",
+    "RavenClaw.mjs",
     "README-header.png",
     "README.md",
     "assets/",
@@ -44,12 +44,14 @@
       "types": "./dist/plugin-sdk/account-id.d.ts",
       "default": "./dist/plugin-sdk/account-id.js"
     },
-    "./cli-entry": "./openclaw.mjs"
+    "./cli-entry": "./RavenClaw.mjs"
   },
   "scripts": {
+    "RavenClaw": "node scripts/run-node.mjs",
+    "RavenClaw:rpc": "node scripts/run-node.mjs agent --mode rpc --json",
     "android:assemble": "cd apps/android && ./gradlew :app:assembleDebug",
     "android:install": "cd apps/android && ./gradlew :app:installDebug",
-    "android:run": "cd apps/android && ./gradlew :app:installDebug && adb shell am start -n ai.openclaw.android/.MainActivity",
+    "android:run": "cd apps/android && ./gradlew :app:installDebug && adb shell am start -n ai.RavenClaw.android/.MainActivity",
     "android:test": "cd apps/android && ./gradlew :app:testDebugUnitTest",
     "build": "pnpm canvas:a2ui:bundle && tsdown && pnpm build:plugin-sdk:dts && node --import tsx scripts/write-plugin-sdk-entry-dts.ts && node --import tsx scripts/canvas-a2ui-copy.ts && node --import tsx scripts/copy-hook-metadata.ts && node --import tsx scripts/copy-export-html-templates.ts && node --import tsx scripts/write-build-info.ts && node --import tsx scripts/write-cli-compat.ts",
     "build:plugin-sdk:dts": "tsc -p tsconfig.plugin-sdk.dts.json",
@@ -86,7 +88,7 @@
     "ios:build": "bash -lc './scripts/ios-configure-signing.sh && cd apps/ios && xcodegen generate && xcodebuild -project OpenClaw.xcodeproj -scheme OpenClaw -destination \"${IOS_DEST:-platform=iOS Simulator,name=iPhone 17}\" -configuration Debug build'",
     "ios:gen": "bash -lc './scripts/ios-configure-signing.sh && cd apps/ios && xcodegen generate'",
     "ios:open": "bash -lc './scripts/ios-configure-signing.sh && cd apps/ios && xcodegen generate && open OpenClaw.xcodeproj'",
-    "ios:run": "bash -lc './scripts/ios-configure-signing.sh && cd apps/ios && xcodegen generate && xcodebuild -project OpenClaw.xcodeproj -scheme OpenClaw -destination \"${IOS_DEST:-platform=iOS Simulator,name=iPhone 17}\" -configuration Debug build && xcrun simctl boot \"${IOS_SIM:-iPhone 17}\" || true && xcrun simctl launch booted ai.openclaw.ios'",
+    "ios:run": "bash -lc './scripts/ios-configure-signing.sh && cd apps/ios && xcodegen generate && xcodebuild -project OpenClaw.xcodeproj -scheme OpenClaw -destination \"${IOS_DEST:-platform=iOS Simulator,name=iPhone 17}\" -configuration Debug build && xcrun simctl boot \"${IOS_SIM:-iPhone 17}\" || true && xcrun simctl launch booted ai.RavenClaw.ios'",
     "lint": "oxlint --type-aware",
     "lint:all": "pnpm lint && pnpm lint:swift",
     "lint:docs": "pnpm dlx markdownlint-cli2",
@@ -97,8 +99,6 @@
     "mac:package": "bash scripts/package-mac-app.sh",
     "mac:restart": "bash scripts/restart-mac.sh",
     "moltbot:rpc": "node scripts/run-node.mjs agent --mode rpc --json",
-    "openclaw": "node scripts/run-node.mjs",
-    "openclaw:rpc": "node scripts/run-node.mjs agent --mode rpc --json",
     "plugins:sync": "node --import tsx scripts/sync-plugin-versions.ts",
     "prepack": "pnpm build && pnpm ui:build",
     "prepare": "command -v git >/dev/null 2>&1 && git rev-parse --is-inside-work-tree >/dev/null 2>&1 && git config core.hooksPath git-hooks || exit 0",

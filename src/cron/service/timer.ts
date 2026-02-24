@@ -483,14 +483,11 @@ function isRunnableJob(params: {
   if (typeof job.state.runningAtMs === "number") {
     return false;
   }
-  if (params.skipAtIfAlreadyRan && job.state.lastStatus) {
+  if (params.skipAtIfAlreadyRan && job.schedule.kind === "at" && job.state.lastStatus) {
     // Any terminal status (ok, error, skipped) means the job already ran at least once.
     // Don't re-fire it on restart — applyJobResult disables one-shot jobs, but guard
     // here defensively (#13845).
-    // Fix: also check for "cron" kind jobs, not just "at" jobs
-    if (job.schedule.kind === "at" || job.schedule.kind === "cron") {
-      return false;
-    }
+    return false;
   }
   const next = job.state.nextRunAtMs;
   return typeof next === "number" && nowMs >= next;

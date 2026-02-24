@@ -8,6 +8,7 @@ export interface InstanceInfo {
   gatewayPort: number;
   createdAt: string;
   lastStartedAt?: string;
+  pid?: number;
   status: InstanceStatus;
 }
 
@@ -33,6 +34,13 @@ export interface MultiInstanceConfig {
   defaultGatewayPort: number;
   portRangeStart: number;
   portRangeEnd: number;
+  defaultInstance?: string;
+}
+
+export interface InstancesRegistry {
+  version: string;
+  defaultInstance: string;
+  instances: Record<string, InstanceInfo>;
 }
 
 export const DEFAULT_MULTI_INSTANCE_CONFIG: MultiInstanceConfig = {

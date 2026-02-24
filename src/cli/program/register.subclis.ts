@@ -279,6 +279,15 @@ const entries: SubCliEntry[] = [
     },
   },
   {
+    name: "instance",
+    description: "Manage multiple OpenClaw instances",
+    hasSubcommands: true,
+    register: async (program) => {
+      const mod = await import("../instance.js");
+      mod.registerInstanceCli(program);
+    },
+  },
+  {
     name: "completion",
     description: "Generate shell completion script",
     hasSubcommands: false,

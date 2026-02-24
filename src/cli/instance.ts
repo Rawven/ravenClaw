@@ -278,6 +278,36 @@ function handleLogsCommand(name: string, options: InstanceLogsCommandOptions): v
   }
 }
 
+function handleSwitchCommand(name: string): void {
+  const manager = getInstanceManager();
+
+  try {
+    const instance = manager.switchInstance(name);
+    defaultRuntime.log("");
+    defaultRuntime.log(theme.success(`Switched to instance "${name}" successfully.`));
+    defaultRuntime.log("");
+    defaultRuntime.log(formatInstanceInfo(instance));
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    defaultRuntime.error(`Failed to switch instance: ${message}`);
+    process.exit(1);
+  }
+}
+
+function handleCurrentCommand(): void {
+  const manager = getInstanceManager();
+  const current = manager.getCurrentInstance();
+
+  if (!current) {
+    defaultRuntime.log(theme.muted("No default instance set."));
+    return;
+  }
+
+  defaultRuntime.log("");
+  defaultRuntime.log(theme.label("Current Instance:"));
+  defaultRuntime.log(formatInstanceInfo(current, true));
+}
+
 export function registerInstanceCli(program: Command) {
   const instance = program
     .command("instance")
@@ -288,6 +318,8 @@ export function registerInstanceCli(program: Command) {
         `\n${theme.heading("Examples:")}\n${formatHelpExamples([
           ["openclaw instance create myinstance", "Create a new instance."],
           ["openclaw instance list", "List all instances."],
+          ["openclaw instance switch myinstance", "Switch default instance."],
+          ["openclaw instance current", "Show current default instance."],
           ["openclaw instance start myinstance", "Start an instance."],
           ["openclaw instance stop myinstance", "Stop an instance."],
           ["openclaw instance delete myinstance", "Delete an instance."],
@@ -309,6 +341,16 @@ export function registerInstanceCli(program: Command) {
     .option("--json", "Output as JSON")
     .option("--status", "Include runtime status")
     .action(handleListCommand);
+
+  instance
+    .command("switch <name>")
+    .description("Switch the default instance")
+    .action(handleSwitchCommand);
+
+  instance
+    .command("current")
+    .description("Show the current default instance")
+    .action(handleCurrentCommand);
 
   instance
     .command("start <name>")
